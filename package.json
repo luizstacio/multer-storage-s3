@@ -1,0 +1,28 @@
+{
+  "name": "multer-storage-s3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/lab -t 5000 -v ./test",
+    "test-cov": "./node_modules/.bin/lab -t 5000 -v -r console -o stdout -r html -o coverage.html ./test"
+  },
+  "engineStrict": true,
+  "engines": {
+    "node": ">= 5"
+  },
+  "author": {
+    "name": "luizstacio",
+    "email": "luizstacio@gmail.com"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "express": "^4.13.3",
+    "lab": "^7.3.0",
+    "multer": "^1.1.0"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.2.19"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "accessKeyId": "<accessKeyId>", 
+  "secretAccessKey": "<secretAccessKey>", 
+  "region": "<region>",
+  "apiVersion": "2006-03-01",
+  "bucket": "<bucket>"
+}
