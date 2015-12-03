@@ -32,7 +32,13 @@ class StorageS3 {
     config.params.Key = destinationPath;
     config.params.Body = file.stream;
 
-    return new AWS.S3.ManagedUpload(config);
+    let upload = new AWS.S3.ManagedUpload(config);
+    
+    upload.on('httpUploadProgress', (data) => {
+      this.emit('progress', data);
+    });
+
+    return upload;
   }
 
   _handleFile(req, file, callback) {
@@ -41,11 +47,18 @@ class StorageS3 {
     managedUpload.send((err, uploadedObjectS3) => {
       if (err) return callback(err, uploadedObjectS3);
 
-      callback(null, {
+      console.log(uploadedObjectS3.Location.split(this.getConfig().bucket));
+
+      let data = {
         filename: file.originalname,
         location: uploadedObjectS3.Location,
+        path: uploadedObjectS3.Location.replace(/https?:\/\/([A-Za-z0-9\-\:\.]+)/, ''),
         etag: uploadedObjectS3.ETag
-      });
+      };
+
+      this.emit('loaded', data);
+
+      callback(null, data);
     });
   }
 }
@@ -56,5 +69,3 @@ class StorageS3 {
 util.inherits(StorageS3, EventEmitter);
 
 module.exports = StorageS3;
-
-
