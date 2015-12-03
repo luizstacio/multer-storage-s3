@@ -63,19 +63,77 @@ lab.experiment('StorageS3', () => {
     });
   });
 
-  lab.after((done) => {
-    var params = {
-      Bucket: s3config.bucket,
-      Key: config.destination + '/file.txt',
+  lab.test('#getFilename', (done) => {
+    
+    class MyStorage extends StorageS3 {
+      constructor(config) {
+        super(config);
+      }
+
+      getFilename(file) {
+        return file.originalname.replace(/\./, `.${Date.now()}.`);
+      }
+    }
+
+    let storage = new MyStorage(config);
+    let file = {
+      originalname: 'file.txt',
+      stream: 'Hello word!'
     };
 
-    s3.deleteObject(params, function(err, data) {
-      if (err) {
-        console.log(err, err.stack);
-        done();
-      }
+    storage._handleFile(null, file, (err, data) => {
+      expect(err).to.be.equal(null);
+      expect(data.location).to.match(/file\.([0-9]+)\.txt/);
       
       done();
+    });
+  });
+
+  lab.test('#getPath', (done) => {
+    let path = 'folderpath2';
+    
+    class MyStorage extends StorageS3 {
+      constructor(config) {
+        super(config);
+      }
+
+      getPath(file) {
+        return path;
+      }
+    }
+
+    let storage = new MyStorage(config);
+    let file = {
+      originalname: 'file.txt',
+      stream: 'Hello word!'
+    };
+
+    storage._handleFile(null, file, (err, data) => {
+      expect(err).to.be.equal(null);
+      expect(data.location).to.contain(path);
+      
+      done();
+    });
+  });
+
+  lab.after((done) => {
+    s3.listObjects({
+      Bucket: s3config.bucket,
+      Prefix: 'folderpath'
+    }, function (err, data) {
+
+      s3.deleteObjects({
+        Bucket: s3config.bucket,
+        Delete: {
+          Objects: data.Contents.map((item) => { return { Key: item.Key } })
+        }
+      }, function(err, data) {
+        if (err) {
+          console.log(err, err.stack);
+          done();
+        }
+        done();
+      });
     });
   });
 });

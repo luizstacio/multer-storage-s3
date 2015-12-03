@@ -17,10 +17,17 @@ class StorageS3 {
     return this.config;
   }
 
+  getPath(file) {
+  }
+
+  getFilename(file) {
+  }
+
   createManagedUpload(file) {
     let config = this.getConfig();
-    let destination = config.destination == null ? '' : config.destination;
-    let destinationPath = path.join(destination, file.originalname);
+    let destination = this.getPath(file) || (config.destination == null ? '' : config.destination);
+    let filename = this.getFilename(file) || file.originalname;
+    let destinationPath = path.join(destination, filename);
     
     config.params.Key = destinationPath;
     config.params.Body = file.stream;

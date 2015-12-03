@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/lab -t 5000 -v ./test",
-    "test-cov": "./node_modules/.bin/lab -t 5000 -v -r console -o stdout -r html -o coverage.html ./test"
+    "test": "./node_modules/.bin/lab -m 5000 -v ./test",
+    "test-cov": "./node_modules/.bin/lab -m 5000 -v -r console -o stdout -r html -o coverage.html ./test"
   },
   "engineStrict": true,
   "engines": {
