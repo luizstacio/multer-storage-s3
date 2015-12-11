@@ -28,7 +28,7 @@ class StorageS3 {
     let destination = this.getPath(file) || (config.destination == null ? '' : config.destination);
     let filename = this.getFilename(file) || file.originalname;
     let destinationPath = path.join(destination, filename);
-    
+
     config.params.Key = destinationPath;
     config.params.Body = file.stream;
 
@@ -41,13 +41,20 @@ class StorageS3 {
     return upload;
   }
 
+  _removeFile(req, file, callback) {
+    let config = this.getConfig();
+
+    config.service.deleteObject({
+      Bucket: config.params.Bucket,
+      Key: file.path
+    }, callback);
+  }
+
   _handleFile(req, file, callback) {
     let managedUpload = this.createManagedUpload(file);
 
     managedUpload.send((err, uploadedObjectS3) => {
       if (err) return callback(err, uploadedObjectS3);
-
-      console.log(uploadedObjectS3.Location.split(this.getConfig().bucket));
 
       let data = {
         filename: file.originalname,
