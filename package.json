@@ -23,6 +23,6 @@
     "multer": "^1.1.0"
   },
   "dependencies": {
-    "aws-sdk": "^2.2.19"
+    "aws-sdk": "^2.2.22"
   }
 }
