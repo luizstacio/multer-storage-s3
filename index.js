@@ -1,9 +1,9 @@
 'use strict';
 
-const util = require('util');
-const path = require('path');
-const AWS = require('aws-sdk');
-const EventEmitter = require('events');
+let util = require('util');
+let path = require('path');
+let AWS = require('aws-sdk');
+let EventEmitter = require('events');
 
 class StorageS3 {
   constructor(config) {
