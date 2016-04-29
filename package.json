@@ -9,7 +9,7 @@
   },
   "engineStrict": true,
   "engines": {
-    "node": ">= 5"
+    "node": ">= 4"
   },
   "author": {
     "name": "luizstacio",
